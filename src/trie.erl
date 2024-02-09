@@ -1,19 +1,21 @@
 -module(trie).
 
--export([empty_trie/0,
-	contains_key/2,
-	find/2,
-	to_list/1,
-	insert/3,
-	insert_all/2,
-	remove/2,
-	merge/2,
-	compare/2,
-	apply_to_val/2,
-	filter_trie/2,
-	map_trie/2,
-	foldl_trie/3,
-	foldr_trie/3]).
+-export([
+empty_trie/0,
+contains_key/2,
+find/2,
+to_list/1,
+insert/3,
+insert_all/2,
+remove/2,
+merge/2,
+compare/2,
+apply_to_val/2,
+filter_trie/2,
+map_trie/2,
+foldl_trie/3,
+foldr_trie/3
+]).
 
 % {Key, Value, Children}
 % Key - ключ для данного узла
@@ -35,7 +37,7 @@ empty_trie() -> ?EMPTY_TRIE.
 % Поиск ветки для следующего шага вглубь
 find_child(_, []) -> key_not_found;
 find_child(CharKey, [Head | _]) when ?CHILD_KEY(Head) == CharKey -> ?CHILD_NODE(Head);
-find_child(CharKey, [_ | Tail]) -> find_child(CharKey, Tail). 
+find_child(CharKey, [_ | Tail]) -> find_child(CharKey, Tail).
 
 
 % Поиск по ключу
@@ -62,7 +64,7 @@ to_list([], Acc) -> Acc;
 to_list([{_, Node}], Acc) -> Acc ++ to_list(Node);
 to_list([{_, Node} | Tail], Acc) -> (Acc ++ to_list(Node)) ++ to_list(Tail);
 to_list({Key, Value, []}, Acc) -> [{Key, Value} | Acc];
-to_list({nil, nil, Children}, _) -> to_list(Children);   
+to_list({nil, nil, Children}, _) -> to_list(Children);
 to_list({Key, Value, Children}, Acc) -> [{Key, Value} | Acc] ++ to_list(Children).
 
 
@@ -161,7 +163,7 @@ get_values([{_, Value} | Tail]) -> [Value | get_values(Tail)].
 
 
 % Фильтрация по Func = fun({Key, Value}) -> ... end
-filter_trie(Func, Trie) -> insert_all(lists:filter(Func, to_list(Trie)), ?EMPTY_TRIE). 
+filter_trie(Func, Trie) -> insert_all(lists:filter(Func, to_list(Trie)), ?EMPTY_TRIE).
 
 
 % Отображение по Func = fun(Value) -> ... end
