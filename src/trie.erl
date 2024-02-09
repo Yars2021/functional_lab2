@@ -105,24 +105,24 @@ insert([CharKey], Value, Trie) ->
     end;
 
 insert([KeyH | KeyT], Value, Trie) ->
-Child = find_child(KeyH, ?CHILDREN(Trie)),
-if
-Child == key_not_found ->
-{
-?KEY(Trie),
-?VALUE(Trie),
-[{KeyH, insert(KeyT, Value, {check_nil(?KEY(Trie)) ++ [KeyH], nil, []})} | ?CHILDREN(Trie)]
-};
-true ->
-{
-?KEY(Trie),
-?VALUE(Trie),
-[{KeyH, insert(KeyT, Value,
-{check_nil(?KEY(Trie)) ++ [KeyH],
-?VALUE(Child),
-?CHILDREN(Child)})} | exclude_child(KeyH, ?CHILDREN(Trie))]
-}
-end.
+    Child = find_child(KeyH, ?CHILDREN(Trie)),
+    if
+        Child == key_not_found ->
+            {
+                ?KEY(Trie),
+                ?VALUE(Trie),
+                [{KeyH, insert(KeyT, Value, {check_nil(?KEY(Trie)) ++ [KeyH], nil, []})} | ?CHILDREN(Trie)]
+            };
+        true ->
+            {
+                ?KEY(Trie),
+                ?VALUE(Trie),
+                [{KeyH, insert(KeyT, Value,
+                    {check_nil(?KEY(Trie)) ++ [KeyH],
+                    ?VALUE(Child),
+                    ?CHILDREN(Child)})} | exclude_child(KeyH, ?CHILDREN(Trie))]
+            }
+    end.
 
 
 % Добавление пар
