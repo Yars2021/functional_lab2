@@ -81,28 +81,28 @@ exclude_child(CharKey, [Head | Tail]) -> [Head | exclude_child(CharKey, Tail)].
 % Замена потомка по ключу
 update_child(CharKey, {Key, Value, Children}, []) -> [{CharKey, {Key, Value, Children}}];
 update_child(CharKey, {Key, Value, Children}, [{CharKey, _} | Tail]) ->
-	[{CharKey, {Key, Value, Children}} | Tail];
+    [{CharKey, {Key, Value, Children}} | Tail];
 update_child(CharKey, {Key, Value, Children}, [Head | Tail]) ->
-	[Head | update_child(CharKey, {Key, Value, Children}, Tail)].
+    [Head | update_child(CharKey, {Key, Value, Children}, Tail)].
 
 
 % Вставка символьной пары ключ-значение и возврат измененного узла
 insert([CharKey], Value, Trie) ->
-	Child = find_child(CharKey, ?CHILDREN(Trie)),
-if
-Child == key_not_found ->
-{
-?KEY(Trie),
-?VALUE(Trie),
-[{CharKey, {check_nil(?KEY(Trie)) ++ [CharKey], Value, []}} | ?CHILDREN(Trie)]
-};
-true ->
-{
-?KEY(Trie),
-?VALUE(Trie),
-update_child(CharKey, {?KEY(Child), Value, ?CHILDREN(Child)}, ?CHILDREN(Trie))
-}
-end;
+    Child = find_child(CharKey, ?CHILDREN(Trie)),
+    if
+        Child == key_not_found ->
+            {
+                ?KEY(Trie),
+                ?VALUE(Trie),
+                [{CharKey, {check_nil(?KEY(Trie)) ++ [CharKey], Value, []}} | ?CHILDREN(Trie)]
+            };
+        true ->
+            {
+                ?KEY(Trie),
+                ?VALUE(Trie),
+                update_child(CharKey, {?KEY(Child), Value, ?CHILDREN(Child)}, ?CHILDREN(Trie))
+            }
+    end;
 
 insert([KeyH | KeyT], Value, Trie) ->
 Child = find_child(KeyH, ?CHILDREN(Trie)),
@@ -175,9 +175,9 @@ map_trie(Func, Trie) -> insert_all(apply_to_val(Func, to_list(Trie)), ?EMPTY_TRI
 
 % Левая свертка по Func = fun(Value) -> ... end
 foldl_trie(Func, Acc, Trie) ->
-	insert_all(lists:foldl(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
+    insert_all(lists:foldl(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
 
 
 % Правая свертка по Func = fun(Value) -> ... end
 foldr_trie(Func, Acc, Trie) ->
-	insert_all(lists:foldr(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
+    insert_all(lists:foldr(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
