@@ -89,14 +89,14 @@ update_child(CharKey, {Key, Value, Children}, [Head | Tail]) ->
 % Вставка символьной пары ключ-значение и возврат измененного узла
 insert([CharKey], Value, Trie) ->
     Child = find_child(CharKey, ?CHILDREN(Trie)),
-    if
-        Child == key_not_found ->
+    case Child of
+        key_not_found ->
             {
                 ?KEY(Trie),
                 ?VALUE(Trie),
                 [{CharKey, {check_nil(?KEY(Trie)) ++ [CharKey], Value, []}} | ?CHILDREN(Trie)]
             };
-        true ->
+        Otherwise ->
             {
                 ?KEY(Trie),
                 ?VALUE(Trie),
@@ -106,8 +106,8 @@ insert([CharKey], Value, Trie) ->
 
 insert([KeyH | KeyT], Value, Trie) ->
     Child = find_child(KeyH, ?CHILDREN(Trie)),
-    if
-        Child == key_not_found ->
+    case Child of
+        key_not_found ->
             {
                 ?KEY(Trie),
                 ?VALUE(Trie),
@@ -116,7 +116,7 @@ insert([KeyH | KeyT], Value, Trie) ->
                     nil,
                     []})} | ?CHILDREN(Trie)]
             };
-        true ->
+        Otherwise ->
             {
                 ?KEY(Trie),
                 ?VALUE(Trie),
