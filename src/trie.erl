@@ -80,8 +80,10 @@ exclude_child(CharKey, [Head | Tail]) -> [Head | exclude_child(CharKey, Tail)].
 
 % Замена потомка по ключу
 update_child(CharKey, {Key, Value, Children}, []) -> [{CharKey, {Key, Value, Children}}];
-update_child(CharKey, {Key, Value, Children}, [{CharKey, _} | Tail]) -> [{CharKey, {Key, Value, Children}} | Tail];
-update_child(CharKey, {Key, Value, Children}, [Head | Tail]) -> [Head | update_child(CharKey, {Key, Value, Children}, Tail)].
+update_child(CharKey, {Key, Value, Children}, [{CharKey, _} | Tail]) ->
+	[{CharKey, {Key, Value, Children}} | Tail];
+update_child(CharKey, {Key, Value, Children}, [Head | Tail]) ->
+	[Head | update_child(CharKey, {Key, Value, Children}, Tail)].
 
 
 % Вставка символьной пары ключ-значение и возврат измененного узла
@@ -115,7 +117,10 @@ insert([KeyH | KeyT], Value, Trie) ->
 			{
 				?KEY(Trie),
 				?VALUE(Trie),
-				[{KeyH, insert(KeyT, Value, {check_nil(?KEY(Trie)) ++ [KeyH], ?VALUE(Child), ?CHILDREN(Child)})} | exclude_child(KeyH, ?CHILDREN(Trie))]
+				[{KeyH, insert(KeyT, Value,
+					       {check_nil(?KEY(Trie)) ++ [KeyH],
+						?VALUE(Child),
+						?CHILDREN(Child)})} | exclude_child(KeyH, ?CHILDREN(Trie))]
 			}
 	end.
 
@@ -169,8 +174,10 @@ map_trie(Func, Trie) -> insert_all(apply_to_val(Func, to_list(Trie)), ?EMPTY_TRI
 
 
 % Левая свертка по Func = fun(Value) -> ... end
-foldl_trie(Func, Acc, Trie) -> insert_all(lists:foldl(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
+foldl_trie(Func, Acc, Trie) ->
+	insert_all(lists:foldl(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
 
 
 % Правая свертка по Func = fun(Value) -> ... end
-foldr_trie(Func, Acc, Trie) -> insert_all(lists:foldr(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
+foldr_trie(Func, Acc, Trie) ->
+	insert_all(lists:foldr(Func, Acc, get_values(to_list(Trie))), ?EMPTY_TRIE).
