@@ -89,40 +89,40 @@ update_child(CharKey, {Key, Value, Children}, [Head | Tail]) ->
 % Вставка символьной пары ключ-значение и возврат измененного узла
 insert([CharKey], Value, Trie) ->
 	Child = find_child(CharKey, ?CHILDREN(Trie)),
-	if
-		Child == key_not_found ->
-			{
-				?KEY(Trie),
-				?VALUE(Trie),
-				[{CharKey, {check_nil(?KEY(Trie)) ++ [CharKey], Value, []}} | ?CHILDREN(Trie)]
-			};
-		true ->
-			{
-				?KEY(Trie),
-				?VALUE(Trie),
-				update_child(CharKey, {?KEY(Child), Value, ?CHILDREN(Child)}, ?CHILDREN(Trie))
-			}
-	end;
+if
+Child == key_not_found ->
+{
+?KEY(Trie),
+?VALUE(Trie),
+[{CharKey, {check_nil(?KEY(Trie)) ++ [CharKey], Value, []}} | ?CHILDREN(Trie)]
+};
+true ->
+{
+?KEY(Trie),
+?VALUE(Trie),
+update_child(CharKey, {?KEY(Child), Value, ?CHILDREN(Child)}, ?CHILDREN(Trie))
+}
+end;
 
 insert([KeyH | KeyT], Value, Trie) ->
-	Child = find_child(KeyH, ?CHILDREN(Trie)),
-	if
-		Child == key_not_found ->
-			{
-				?KEY(Trie),
-				?VALUE(Trie),
-				[{KeyH, insert(KeyT, Value, {check_nil(?KEY(Trie)) ++ [KeyH], nil, []})} | ?CHILDREN(Trie)]
-			};
-		true ->
-			{
-				?KEY(Trie),
-				?VALUE(Trie),
-				[{KeyH, insert(KeyT, Value,
-					       {check_nil(?KEY(Trie)) ++ [KeyH],
-						?VALUE(Child),
-						?CHILDREN(Child)})} | exclude_child(KeyH, ?CHILDREN(Trie))]
-			}
-	end.
+Child = find_child(KeyH, ?CHILDREN(Trie)),
+if
+Child == key_not_found ->
+{
+?KEY(Trie),
+?VALUE(Trie),
+[{KeyH, insert(KeyT, Value, {check_nil(?KEY(Trie)) ++ [KeyH], nil, []})} | ?CHILDREN(Trie)]
+};
+true ->
+{
+?KEY(Trie),
+?VALUE(Trie),
+[{KeyH, insert(KeyT, Value,
+{check_nil(?KEY(Trie)) ++ [KeyH],
+?VALUE(Child),
+?CHILDREN(Child)})} | exclude_child(KeyH, ?CHILDREN(Trie))]
+}
+end.
 
 
 % Добавление пар
