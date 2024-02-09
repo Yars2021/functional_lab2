@@ -1,21 +1,19 @@
 -module(trie).
 
--export([
-empty_trie/0,
-contains_key/2,
-find/2,
-to_list/1,
-insert/3,
-insert_all/2,
-remove/2,
-merge/2,
-compare/2,
-apply_to_val/2,
-filter_trie/2,
-map_trie/2,
-foldl_trie/3,
-foldr_trie/3
-]).
+-export([empty_trie/0]).
+-export([contains_key/2]).
+-export([find/2]).
+-export([to_list/1]).
+-export([insert/3]).
+-export([insert_all/2]).
+-export([remove/2]).
+-export([merge/2]).
+-export([compare/2]).
+-export([apply_to_val/2]).
+-export([filter_trie/2]).
+-export([map_trie/2]).
+-export([foldl_trie/3]).
+-export([foldr_trie/3]).
 
 % {Key, Value, Children}
 % Key - ключ для данного узла
