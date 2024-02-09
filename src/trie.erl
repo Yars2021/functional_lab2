@@ -111,7 +111,10 @@ insert([KeyH | KeyT], Value, Trie) ->
             {
                 ?KEY(Trie),
                 ?VALUE(Trie),
-                [{KeyH, insert(KeyT, Value, {check_nil(?KEY(Trie)) ++ [KeyH], nil, []})} | ?CHILDREN(Trie)]
+                [{KeyH, insert(KeyT, Value,
+                    {check_nil(?KEY(Trie)) ++ [KeyH],
+                    nil,
+                    []})} | ?CHILDREN(Trie)]
             };
         true ->
             {
