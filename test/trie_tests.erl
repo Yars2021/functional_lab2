@@ -5,7 +5,7 @@
 -define(EMPTY_TRIE, {nil, nil, []}).
 
 % Тест пустого дерева
-empty_tree_test() -> ?assertEqual(trie:empty_tree(), ?EMPTY_TRIE).
+empty_tree_test() -> ?assertEqual(trie:empty_trie(), ?EMPTY_TRIE).
 
 % Тест поиска
 find_test() ->
