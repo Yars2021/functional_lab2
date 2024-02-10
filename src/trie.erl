@@ -145,7 +145,8 @@ merge(LTrie, ?EMPTY_TRIE) -> LTrie;
 merge(LTrie, []) -> LTrie;
 merge(LTrie, [{Key, Value}]) -> insert(Key, Value, LTrie);
 merge(LTrie, [{Key, Value} | Tail]) -> merge(insert(Key, Value, LTrie), Tail);
-merge(LTrie, RTrie) -> merge(LTrie, lists:filter(fun({_, Value}) -> Value /= nil end, to_list(RTrie))).
+merge(LTrie, RTrie) ->
+    merge(LTrie, lists:filter(fun({_, Value}) -> Value /= nil end, to_list(RTrie))).
 
 
 % Проверка эквивалентности (true/false)
