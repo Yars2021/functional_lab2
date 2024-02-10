@@ -42,3 +42,17 @@ unique_root_test() ->
     trie:remove("1", Trie),
     Filtered = trie:filter_trie(fun({Key, _}) -> Key == nil end, Trie),
     ?assertEqual(Filtered, ?EMPTY_TRIE).
+
+% Property-based свойства моноида, операции с нулевым элементом
+monoid_zero_test() ->
+    Trie = trie:insert_all([{"Key", "Value"},
+                            {"ABCD", "1234"},
+                            {"1357", "0000"},
+                            {"1", "True"},
+                            {"232", "232"}],
+                            ?EMPTY_TRIE),
+    ?assertEqual(trie:compare(?EMPTY_TRIE, ?EMPTY_TRIE), true),
+    ?assertEqual(trie:compare(?EMPTY_TRIE, Trie), false),
+    ?assertEqual(trie:compare(Trie, ?EMPTY_TRIE), false),
+    ?assertEqual(trie:compare(trie:merge(Trie, ?EMPTY_TRIE), Trie), true),
+    ?assertEqual(trie:compare(trie:merge(?EMPTY_TRIE, Trie), Trie), true).
