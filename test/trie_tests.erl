@@ -20,3 +20,13 @@ find_test() ->
     ?assertEqual(trie:find("1357", Trie), "0000"),
     ?assertEqual(trie:find("1", Trie), "True"),
     ?assertEqual(trie:find("Key", ?EMPTY_TRIE), key_not_found).
+
+% Тест вставки
+insert_test() ->
+    Trie1 = insert_all([{"Key", 1}, {"Ke1", 2}]),
+    Trie2 = insert_all([{"Ke1", 2}, {"Key", 1}]),
+    ?assertEqual(trie:compare(Trie1, Trie2), true),
+    trie:insert("Key", 2222, Trie1),
+    trie:insert("New", 2222, Trie2),
+    ?assertEqual(trie:find("Key", Trie1), 2222),
+    ?assertEqual(trie:find("New", Trie2), 2222).
