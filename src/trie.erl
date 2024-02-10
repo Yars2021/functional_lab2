@@ -73,7 +73,7 @@ check_nil(Str) -> Str.
 
 % Получение списка потомков за исключением символьного ключа
 exclude_child(_, []) -> [];
-exclude_child(CharKey, [CharKey]) -> [];
+exclude_child(CharKey, [{CharKey, _}]) -> [];
 exclude_child(CharKey, [{CharKey, _} | Tail]) -> Tail;
 exclude_child(CharKey, [Head | Tail]) -> [Head | exclude_child(CharKey, Tail)].
 
