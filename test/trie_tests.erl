@@ -27,10 +27,10 @@ insert_test() ->
     Trie1 = trie:insert_all([{"Key", 1}, {"Ke1", 2}], ?EMPTY_TRIE),
     Trie2 = trie:insert_all([{"Ke1", 2}, {"Key", 1}], ?EMPTY_TRIE),
     ?assertEqual(trie:compare(Trie1, Trie2), true),
-    trie:insert("Key", 2222, Trie1),
-    trie:insert("New", 2222, Trie2),
-    ?assertEqual(trie:find("Key", Trie1), 2222),
-    ?assertEqual(trie:find("New", Trie2), 2222).
+    New1 = trie:insert("Key", 2222, Trie1),
+    New2 = trie:insert("New", 2222, Trie2),
+    ?assertEqual(trie:find("Key", New1), 2222),
+    ?assertEqual(trie:find("New", New2), 2222).
 
 % Property-based единственность корневого элемента
 unique_root_test() ->
