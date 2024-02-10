@@ -57,3 +57,23 @@ monoid_zero_test() ->
     ?assertEqual(trie:compare(Trie, ?EMPTY_TRIE), false),
     ?assertEqual(trie:compare(trie:merge(Trie, ?EMPTY_TRIE), Trie), true),
     ?assertEqual(trie:compare(trie:merge(?EMPTY_TRIE, Trie), Trie), true).
+
+% Property-based свойства моноида, ассоциативность операции merge
+monoid_assoc_test() ->
+    Trie1 = trie:insert_all([{"Key", 1},
+                             {"ABCD", 2},
+                             {"1357", 3},
+                             {"1", 4},
+                             {"232", 5}],
+                             ?EMPTY_TRIE),
+    Trie2 = trie:insert_all([{"AAAA", 0},
+                             {"ABC", 10},
+                             {"66666", 66666}],
+                             ?EMPTY_TRIE),
+    Trie3 = trie:insert_all([{"BCD", 676},
+                             {"sqr(2)", 4},
+                             {"pi*10^10", 31415926535}]),
+    ?assertEqual(trie:compare(trie:merge(Trie1, Trie2), trie:merge(Trie2, Trie1)), true),
+    Merge1 = trie:merge(Trie1, trie:merge(Trie2, Trie3)),
+    Merge2 = trie:merge(trie:merge(Trie1, Trie2), Trie3),
+    ?assertEqual(trie:compare(Merge1, Merge2), true).
