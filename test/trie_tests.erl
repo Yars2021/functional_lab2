@@ -30,3 +30,15 @@ insert_test() ->
     trie:insert("New", 2222, Trie2),
     ?assertEqual(trie:find("Key", Trie1), 2222),
     ?assertEqual(trie:find("New", Trie2), 2222).
+
+% Property-based единственность корневого элемента
+unique_root_test() ->
+    Trie = trie:insert_all([{"Key", "Value"},
+                            {"ABCD", "1234"},
+                            {"1357", "0000"},
+                            {"1", "True"},
+                            {"232", "232"}],
+                            ?EMPTY_TRIE),
+    trie:remove("1", Trie),
+    Filtered = trie:filter_trie(fun({Key, _}) -> Key == nil end, Trie),
+    ?assertEqual(Filtered, ?EMPTY_TRIE).
