@@ -32,6 +32,16 @@ insert_test() ->
     ?assertEqual(trie:find("Key", New1), 2222),
     ?assertEqual(trie:find("New", New2), 2222).
 
+% Тест удаления
+remove_test() ->
+    Trie = trie:insert_all([{"Key", "Value"},
+                            {"ABCD", "1234"},
+                            {"1357", "0000"},
+                            {"1", "True"},
+                            {"232", "232"}],
+                            ?EMPTY_TRIE),
+    ?assertEqual(trie:find("1", trie:remove("1", Trie)) == "True", false).
+
 % Property-based единственность корневого элемента
 unique_root_test() ->
     Trie = trie:insert_all([{"Key", "Value"},
@@ -40,8 +50,8 @@ unique_root_test() ->
                             {"1", "True"},
                             {"232", "232"}],
                             ?EMPTY_TRIE),
-    trie:remove("1", Trie),
-    Filtered = trie:filter_trie(fun({Key, _}) -> Key == nil end, Trie),
+    Filtered = trie:filter_trie(fun({Key, _}) -> Key == nil end,
+                            trie:remove("1", Trie)),
     ?assertEqual(Filtered, ?EMPTY_TRIE).
 
 % Property-based свойства моноида, операции с нулевым элементом
