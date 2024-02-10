@@ -19,7 +19,8 @@ find_test() ->
     ?assertEqual(trie:find("ABCD", Trie), "1234"),
     ?assertEqual(trie:find("1357", Trie), "0000"),
     ?assertEqual(trie:find("1", Trie), "True"),
-    ?assertEqual(trie:find("Key", ?EMPTY_TRIE), key_not_found).
+    ?assertEqual(trie:find("NoKey", Trie), key_not_found),
+    ?assertEqual(trie:find("Key", ?EMPTY_TRIE), structure_is_empty).
 
 % Тест вставки
 insert_test() ->
