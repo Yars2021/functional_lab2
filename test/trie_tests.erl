@@ -23,8 +23,8 @@ find_test() ->
 
 % Тест вставки
 insert_test() ->
-    Trie1 = insert_all([{"Key", 1}, {"Ke1", 2}]),
-    Trie2 = insert_all([{"Ke1", 2}, {"Key", 1}]),
+    Trie1 = insert_all([{"Key", 1}, {"Ke1", 2}], ?EMPTY_TRIE),
+    Trie2 = insert_all([{"Ke1", 2}, {"Key", 1}], ?EMPTY_TRIE),
     ?assertEqual(trie:compare(Trie1, Trie2), true),
     trie:insert("Key", 2222, Trie1),
     trie:insert("New", 2222, Trie2),
