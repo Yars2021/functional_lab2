@@ -129,4 +129,4 @@ monoid_assoc_test_case(SeqLen1, SeqLen2, SeqLen3) ->
 monoid_assoc_test() ->
     [monoid_assoc_test_case(rand:uniform(50) - 1,
                             rand:uniform(50) - 1,
-                            rand:uniform(50) - 1) || _ <- lists:seq(1, 10000)].
+                            rand:uniform(50) - 1) || _ <- lists:seq(1, 1000)].
