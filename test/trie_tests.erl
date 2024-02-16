@@ -56,7 +56,8 @@ monoid_zero_test_case(SeqLen) ->
                         crypto:strong_rand_bytes(
                             rand:uniform(16)))),
                 random:uniform(-15, 15)
-            } || <- lists:seq(1, SeqLen)
+            }
+            || _ <- lists:seq(1, SeqLen)
         ], trie:empty_trie()
     ),
     Res1 = trie:merge(Test, trie:empty_trie()),
