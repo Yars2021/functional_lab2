@@ -55,7 +55,7 @@ monoid_zero_test_case(SeqLen) ->
                     base64:encode(
                         crypto:strong_rand_bytes(
                             rand:uniform(16)))),
-                random:uniform(-15, 15)
+                rand:uniform(1000)
             }
             || _ <- lists:seq(1, SeqLen)
         ], trie:empty_trie()
