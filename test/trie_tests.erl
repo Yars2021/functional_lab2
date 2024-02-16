@@ -55,12 +55,7 @@ unique_root_test() ->
     ?assertEqual(Filtered, ?EMPTY_TRIE).
 
 get_random_data(KeyLenMax, ValueMin, ValueMax, SeqLen) ->
-    [
-        {
-            binary_to_list(base64:encode(crypto:strong_rand_bytes(random:uniform(KeyLenMax)))),
-            random:uniform(ValueMin, ValueMax)
-        } || <- lists:seq(1, SeqLen)
-    ].
+    [{binary_to_list(base64:encode(crypto:strong_rand_bytes(random:uniform(KeyLenMax)))), random:uniform(ValueMin, ValueMax)} || <- lists:seq(1, SeqLen)].
 
 
 % Property-based свойства моноида, нулевой элемент
