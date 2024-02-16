@@ -43,8 +43,23 @@ remove_test() ->
     ?assertEqual(trie:find("1", trie:remove("1", Trie)) == "True", false).
 
 % Property-based единственность корневого элемента
-unique_root_test() ->
-    ?assertEqual(?EMPTY_TRIE, ?EMPTY_TRIE).
+unique_root_test_case(SeqLen) ->
+    Test = trie:insert_all(
+        [
+            {
+                binary_to_list(
+                    base64:encode(
+                        crypto:strong_rand_bytes(
+                            rand:uniform(16)))),
+                rand:uniform(1000)
+            }
+            || _ <- lists:seq(1, SeqLen)
+        ], trie:empty_trie()
+    ),
+    ?assertEqual(trie:compare(trie:filter_trie(fun({Key, _}) -> Key == nil end, Test), trie:empty_trie()), true).
+
+monoid_root_test() ->
+    [unique_root_test_case(rand:uniform(100) - 1) || _ <- lists:seq(1, 10000)].
 
 % Property-based свойства моноида, нулевой элемент
 monoid_zero_test_case(SeqLen) ->
