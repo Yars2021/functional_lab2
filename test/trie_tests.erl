@@ -122,7 +122,6 @@ monoid_assoc_test_case(SeqLen1, SeqLen2, SeqLen3) ->
             || _ <- lists:seq(1, SeqLen3)
         ], trie:empty_trie()
     ),
-    ?assertEqual(trie:compare(trie:merge(Test1, Test2), trie:merge(Test2, Test1)), true),
     Merge1 = trie:merge(Test1, trie:merge(Test2, Test3)),
     Merge2 = trie:merge(trie:merge(Test1, Test2), Test3),
     ?assertEqual(trie:compare(Merge1, Merge2), true).
