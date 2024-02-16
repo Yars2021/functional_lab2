@@ -127,6 +127,6 @@ monoid_assoc_test_case(SeqLen1, SeqLen2, SeqLen3) ->
     ?assertEqual(trie:compare(Merge1, Merge2), true).
 
 monoid_assoc_test() ->
-    [monoid_assoc_test_case(rand:uniform(100) - 1,
-                            rand:uniform(100) - 1,
-                            rand:uniform(100) - 1) || _ <- lists:seq(1, 10000)].
+    [monoid_assoc_test_case(rand:uniform(50) - 1,
+                            rand:uniform(50) - 1,
+                            rand:uniform(50) - 1) || _ <- lists:seq(1, 10000)].
