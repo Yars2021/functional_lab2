@@ -170,7 +170,8 @@ get_values([{_, Value} | Tail]) -> [Value | get_values(Tail)].
 
 
 % Фильтрация по Func = fun({Key, Value}) -> ... end
-filter_trie(Func, Trie) -> insert_all(filter_trie(Func, {?KEY(Trie), ?VALUE(Trie), ?CHILDREN(Trie)}, []), ?EMPTY_TRIE).
+filter_trie(Func, Trie) ->
+    insert_all(filter_trie(Func, {?KEY(Trie), ?VALUE(Trie), ?CHILDREN(Trie)}, []), ?EMPTY_TRIE).
 
 filter_trie(_, {_, _, []}, List) -> List;
 
@@ -178,10 +179,12 @@ filter_trie(Func, {Key, Value, [{_, Node} | Tail]}, List) ->
     case Func({?KEY(Node), ?VALUE(Node)}) of
         true ->
             case ?VALUE(Node) of
-                nil -> List ++ filter_trie(Func, {?KEY(Node), ?VALUE(Node), ?CHILDREN(Node)}, List)
+                nil -> List ++
+                            filter_trie(Func, {?KEY(Node), ?VALUE(Node), ?CHILDREN(Node)}, List)
                             ++ filter_trie(Func, {Key, Value, Tail}, List);
-                _ -> [{?KEY(Node), ?VALUE(Node)} | 
-                       List ++ filter_trie(Func, {?KEY(Node), ?VALUE(Node), ?CHILDREN(Node)}, List)
+                _ -> [{?KEY(Node), ?VALUE(Node)} |
+                       List ++
+                            filter_trie(Func, {?KEY(Node), ?VALUE(Node), ?CHILDREN(Node)}, List)
                             ++ filter_trie(Func, {Key, Value, Tail}, List)]
             end;
         _ -> List ++ filter_trie(Func, {?KEY(Node), ?VALUE(Node), ?CHILDREN(Node)}, List)
