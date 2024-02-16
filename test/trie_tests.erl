@@ -110,7 +110,7 @@ monoid_assoc_test_case(SeqLen1, SeqLen2, SeqLen3) ->
             || _ <- lists:seq(1, SeqLen2)
         ], trie:empty_trie()
     ),
-    Test2 = trie:insert_all(
+    Test3 = trie:insert_all(
         [
             {
                 binary_to_list(
