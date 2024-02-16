@@ -85,22 +85,47 @@ monoid_zero_test() ->
     [monoid_zero_test_case(rand:uniform(100) - 1) || _ <- lists:seq(1, 10000)].
 
 % Property-based свойства моноида, ассоциативность операции merge
-monoid_assoc_test() ->
-    Trie1 = trie:insert_all([{"Key", 1},
-                             {"ABCD", 2},
-                             {"1357", 3},
-                             {"1", 4},
-                             {"232", 5}],
-                             ?EMPTY_TRIE),
-    Trie2 = trie:insert_all([{"AAAA", 0},
-                             {"ABC", 10},
-                             {"66666", 66666}],
-                             ?EMPTY_TRIE),
-    Trie3 = trie:insert_all([{"BCD", 676},
-                             {"sqr(2)", 4},
-                             {"pi*10^10", 31415926535}],
-                             ?EMPTY_TRIE),
-    ?assertEqual(trie:compare(trie:merge(Trie1, Trie2), trie:merge(Trie2, Trie1)), true),
-    Merge1 = trie:merge(Trie1, trie:merge(Trie2, Trie3)),
-    Merge2 = trie:merge(trie:merge(Trie1, Trie2), Trie3),
+monoid_assoc_test_case(SeqLen1, SeqLen2, SeqLen3) ->
+    Test1 = trie:insert_all(
+        [
+            {
+                binary_to_list(
+                    base64:encode(
+                        crypto:strong_rand_bytes(
+                            rand:uniform(16)))),
+                rand:uniform(1000)
+            }
+            || _ <- lists:seq(1, SeqLen1)
+        ], trie:empty_trie()
+    ),
+    Test2 = trie:insert_all(
+        [
+            {
+                binary_to_list(
+                    base64:encode(
+                        crypto:strong_rand_bytes(
+                            rand:uniform(16)))),
+                rand:uniform(1000)
+            }
+            || _ <- lists:seq(1, SeqLen2)
+        ], trie:empty_trie()
+    ),
+    Test2 = trie:insert_all(
+        [
+            {
+                binary_to_list(
+                    base64:encode(
+                        crypto:strong_rand_bytes(
+                            rand:uniform(16)))),
+                rand:uniform(1000)
+            }
+            || _ <- lists:seq(1, SeqLen3)
+        ], trie:empty_trie()
+    ),
+    ?assertEqual(trie:compare(trie:merge(Test1, Test2), trie:merge(Test2, Test1)), true),
+    Merge1 = trie:merge(Test1, trie:merge(Test2, Test3)),
+    Merge2 = trie:merge(trie:merge(Test1, Test2), Test3),
     ?assertEqual(trie:compare(Merge1, Merge2), true).
+
+monoid_assoc_test() ->
+    [monoid_assoc_test_case(rand:uniform(100) - 1, rand:uniform(100) - 1, rand:uniform(100) - 1) || _ <- lists:seq(1, 10000)].
