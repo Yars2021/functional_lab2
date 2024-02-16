@@ -42,18 +42,17 @@ remove_test() ->
                             ?EMPTY_TRIE),
     ?assertEqual(trie:find("1", trie:remove("1", Trie)) == "True", false).
 
-
-get_random_data(KeyLenMax,ValueMin,ValueMax,SeqLen)->[{binary_to_list(base64:encode(crypto:strong_rand_bytes(random:uniform(KeyLenMax)))),random:uniform(ValueMin, ValueMax)}||<-lists:seq(1,SeqLen)].
-
+% Генерация пары
+get_random_pair(KeyLenMax, valueMin, ValueMax, SeqLen) ->
+    [{random:uniform(ValueMin, ValueMax)} || <- lists:seq(1, SeqLen)].
 
 % Property-based единственность корневого элемента
 unique_root_test() ->
     ?assertEqual(?EMPTY_TRIE, ?EMPTY_TRIE).
 
-
 % Property-based свойства моноида, нулевой элемент
 monoid_zero_test_case(MaxLen) ->
-    Test = trie:insert_all(get_random_data(16, 0, 10, MaxLen)),
+    Test = trie:insert_all(get_random_pair(16, 0, 10, MaxLen)),
     Res1 = trie:merge(Test, trie:empty_trie()),
     ?assertEqual(trie:to_list(Test), trie:to_list(Res1)),
     Res2 = trie:merge(trie:empty_trie(), Test),
