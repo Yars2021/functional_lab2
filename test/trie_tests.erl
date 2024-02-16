@@ -1,5 +1,7 @@
 -module(trie_tests).
 
+-export([get_random_pair/4]).
+
 -include_lib("eunit/include/eunit.hrl").
 
 -define(EMPTY_TRIE, {nil, nil, []}).
@@ -44,7 +46,15 @@ remove_test() ->
 
 % Генерация пары
 get_random_pair(KeyLenMax, ValueMin, ValueMax, SeqLen) ->
-    [{random:uniform(KeyLenMax), random:uniform(ValueMin, ValueMax)} || <- lists:seq(1, SeqLen)].
+    [
+        {
+            binary_to_list(
+                base64:encode(
+                    crypto:strong_rand_bytes(
+                        rand:uniform(KeyLenMax)))),
+            random:uniform(ValueMin, ValueMax)
+        } || <- lists:seq(1, SeqLen)
+    ].
 
 % Property-based единственность корневого элемента
 unique_root_test() ->
@@ -59,7 +69,7 @@ monoid_zero_test_case(MaxLen) ->
     ?assertEqual(trie:to_list(Test), trie:to_list(Res2)).
 
 monoid_zero_test() ->
-    [monoid_zero_test_case(random:uniform(1000) - 1) || _ <- lists:seq(1, 10000)].
+    [monoid_zero_test_case(rand:uniform(1000) - 1) || _ <- lists:seq(1, 10000)].
 
 % Property-based свойства моноида, ассоциативность операции merge
 monoid_assoc_test() ->
