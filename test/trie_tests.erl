@@ -56,7 +56,8 @@ unique_root_test_case(SeqLen) ->
             || _ <- lists:seq(1, SeqLen)
         ], trie:empty_trie()
     ),
-    ?assertEqual(trie:compare(trie:filter_trie(fun({Key, _}) -> Key == nil end, Test), trie:empty_trie()), true).
+    ?assertEqual(trie:compare(trie:filter_trie(fun({Key, _}) -> Key == nil end, Test),
+        trie:empty_trie()), true).
 
 monoid_root_test() ->
     [unique_root_test_case(rand:uniform(100) - 1) || _ <- lists:seq(1, 10000)].
