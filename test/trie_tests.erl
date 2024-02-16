@@ -43,8 +43,8 @@ remove_test() ->
     ?assertEqual(trie:find("1", trie:remove("1", Trie)) == "True", false).
 
 % Генерация пары
-get_random_pair(KeyLenMax, valueMin, ValueMax, SeqLen) ->
-    [{random:uniform(ValueMin, ValueMax)} || <- lists:seq(1, SeqLen)].
+get_random_pair(KeyLenMax, ValueMin, ValueMax, SeqLen) ->
+    [{random:uniform(KeyLenMax), random:uniform(ValueMin, ValueMax)} || <- lists:seq(1, SeqLen)].
 
 % Property-based единственность корневого элемента
 unique_root_test() ->
