@@ -57,7 +57,7 @@ monoid_zero_test_case(SeqLen) ->
                             rand:uniform(16)))),
                 random:uniform(-15, 15)
             } || <- lists:seq(1, SeqLen)
-        ], ?EMPTY_TRIE
+        ], trie:empty_trie()
     ),
     Res1 = trie:merge(Test, trie:empty_trie()),
     ?assertEqual(trie:to_list(Test), trie:to_list(Res1)),
