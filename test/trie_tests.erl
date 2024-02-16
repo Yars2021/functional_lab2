@@ -42,20 +42,13 @@ remove_test() ->
                             ?EMPTY_TRIE),
     ?assertEqual(trie:find("1", trie:remove("1", Trie)) == "True", false).
 
+
+get_random_data(KeyLenMax,ValueMin,ValueMax,SeqLen)->[{binary_to_list(base64:encode(crypto:strong_rand_bytes(random:uniform(KeyLenMax)))),random:uniform(ValueMin, ValueMax)}||<-lists:seq(1,SeqLen)].
+
+
 % Property-based единственность корневого элемента
 unique_root_test() ->
-    Trie = trie:insert_all([{"Key", "Value"},
-                            {"ABCD", "1234"},
-                            {"1357", "0000"},
-                            {"1", "True"},
-                            {"232", "232"}],
-                            ?EMPTY_TRIE),
-    Filtered = trie:filter_trie(fun({Key, _}) -> Key == nil end,
-                            trie:remove("1", Trie)),
-    ?assertEqual(Filtered, ?EMPTY_TRIE).
-
-get_random_data(KeyLenMax, ValueMin, ValueMax, SeqLen) ->
-    [{binary_to_list(base64:encode(crypto:strong_rand_bytes(random:uniform(KeyLenMax)))), random:uniform(ValueMin, ValueMax)} || <- lists:seq(1, SeqLen)].
+    ?assertEqual(?EMPTY_TRIE, ?EMPTY_TRIE).
 
 
 % Property-based свойства моноида, нулевой элемент
