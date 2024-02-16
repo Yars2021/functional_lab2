@@ -54,19 +54,28 @@ unique_root_test() ->
                             trie:remove("1", Trie)),
     ?assertEqual(Filtered, ?EMPTY_TRIE).
 
-% Property-based свойства моноида, операции с нулевым элементом
+get_random_data(KeyLenMax, ValueMin, ValueMax, SeqLen) ->
+    [
+        {
+            binary_to_list(
+                base64:encode(
+                    crypto:strong_rand_bytes(
+                        random:uniform(KeyLenMax)))),
+            random:uniform(ValueMin, ValueMax)
+        } || <- lists:seq(1, SeqLen)
+    ].
+
+
+% Property-based свойства моноида, нулевой элемент
+monoid_zero_test_case(MaxLen) ->
+    Test = trie:insert_all(get_random_data(16, 0, 10, MaxLen)),
+    Res1 = trie:merge(Test, trie:empty_trie()),
+    ?assertEqual(trie:to_list(Test), trie:to_list(Res1)),
+    Res2 = trie:merge(trie:empty_trie(), Test),
+    ?assertEqual(trie:to_list(Test), trie:to_list(Res2)).
+
 monoid_zero_test() ->
-    Trie = trie:insert_all([{"Key", "Value"},
-                            {"ABCD", "1234"},
-                            {"1357", "0000"},
-                            {"1", "True"},
-                            {"232", "232"}],
-                            ?EMPTY_TRIE),
-    ?assertEqual(trie:compare(?EMPTY_TRIE, ?EMPTY_TRIE), true),
-    ?assertEqual(trie:compare(?EMPTY_TRIE, Trie), false),
-    ?assertEqual(trie:compare(Trie, ?EMPTY_TRIE), false),
-    ?assertEqual(trie:compare(trie:merge(Trie, ?EMPTY_TRIE), Trie), true),
-    ?assertEqual(trie:compare(trie:merge(?EMPTY_TRIE, Trie), Trie), true).
+    [monoid_zero_test_case(random:uniform(1000) - 1) || _ <- lists:seq(1, 10000)].
 
 % Property-based свойства моноида, ассоциативность операции merge
 monoid_assoc_test() ->
