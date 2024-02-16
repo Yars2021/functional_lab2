@@ -66,7 +66,7 @@ monoid_zero_test_case(SeqLen) ->
     ?assertEqual(trie:to_list(Test), trie:to_list(Res2)).
 
 monoid_zero_test() ->
-    [monoid_zero_test_case(rand:uniform(100) - 1) || _ <- lists:seq(1, 10000)].
+    [monoid_zero_test_case(rand:uniform(500) - 1) || _ <- lists:seq(1, 10000)].
 
 % Property-based свойства моноида, ассоциативность операции merge
 monoid_assoc_test() ->
