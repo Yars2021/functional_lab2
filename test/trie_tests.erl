@@ -57,7 +57,7 @@ monoid_zero_test_case(MaxLen) ->
                             rand:uniform(KeyLenMax)))),
                 random:uniform(ValueMin, ValueMax)
             } || <- lists:seq(1, SeqLen)
-        ].
+        ], ?EMPTY_TRIE
     ),
     Res1 = trie:merge(Test, trie:empty_trie()),
     ?assertEqual(trie:to_list(Test), trie:to_list(Res1)),
