@@ -47,15 +47,15 @@ unique_root_test() ->
     ?assertEqual(?EMPTY_TRIE, ?EMPTY_TRIE).
 
 % Property-based свойства моноида, нулевой элемент
-monoid_zero_test_case(MaxLen) ->
+monoid_zero_test_case(SeqLen) ->
     Test = trie:insert_all(
         [
             {
                 binary_to_list(
                     base64:encode(
                         crypto:strong_rand_bytes(
-                            rand:uniform(KeyLenMax)))),
-                random:uniform(ValueMin, ValueMax)
+                            rand:uniform(16)))),
+                random:uniform(-15, 15)
             } || <- lists:seq(1, SeqLen)
         ], ?EMPTY_TRIE
     ),
